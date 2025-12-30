@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """
-Simple HTTP server for attack demonstration
+Simple HTTPS server for attack demonstration
 Serves attack_demo.sh script that will be downloaded by malicious models
+Uses SSL/TLS encryption for secure communication
 """
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import ssl
 import os
 import datetime
 
 UPLOAD_DIR = "./uploads"
 PORT = 8888
+CERT_FILE = "server.crt"
+KEY_FILE = "server.key"
 
 class AttackServerHandler(BaseHTTPRequestHandler):
 
@@ -92,21 +96,30 @@ class AttackServerHandler(BaseHTTPRequestHandler):
         pass
 
 def run_server():
-    """Start the attack demonstration server"""
+    """Start the HTTPS attack demonstration server"""
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+    # Create HTTPS server
     server_address = ('', PORT)
     httpd = HTTPServer(server_address, AttackServerHandler)
 
+    # Wrap with SSL
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain(certfile=CERT_FILE, keyfile=KEY_FILE)
+    httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+
     print("="*70)
-    print(" Attack Demonstration Server")
+    print(" Attack Demonstration Server (HTTPS)")
     print("="*70)
-    print(f"Server running on http://localhost:{PORT}")
-    print(f"Attack script: http://localhost:{PORT}/attack_demo.sh")
-    print(f"Upload endpoint: POST to http://localhost:{PORT}/upload")
+    print(f"Server running on https://localhost:{PORT}")
+    print(f"Attack script: https://localhost:{PORT}/attack_demo.sh")
+    print(f"Upload endpoint: POST to https://localhost:{PORT}/upload")
     print(f"Upload directory: {os.path.abspath(UPLOAD_DIR)}")
+    print(f"SSL Certificate: {CERT_FILE}")
+    print(f"SSL Key: {KEY_FILE}")
     print("="*70)
-    print("\nPress Ctrl+C to stop the server\n")
+    print("\n⚠️  Using self-signed certificate (accept security warnings)")
+    print("Press Ctrl+C to stop the server\n")
 
     try:
         httpd.serve_forever()

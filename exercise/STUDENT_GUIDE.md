@@ -319,7 +319,7 @@ RSA File Encryption/Decryption Exercise
 ### Q4: 실제 프로덕션에서도 이렇게 사용하나요?
 **A:** 기본 원리는 같지만, 실제로는 더 복잡한 키 관리, 인증서, 프로토콜(TLS/SSL) 등이 사용됩니다.
 
-## 📖 참고 자료
+##  참고 자료
 
 - [Python Cryptography 공식 문서](https://cryptography.io/)
 - [RSA 알고리즘 설명](https://ko.wikipedia.org/wiki/RSA_%EC%95%94%ED%98%B8)

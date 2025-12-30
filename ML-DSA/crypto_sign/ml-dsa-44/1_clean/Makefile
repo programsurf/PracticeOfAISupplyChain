@@ -6,11 +6,18 @@ CFLAGS= -Os -Wall -Wextra -Wpedantic -Werror -Wmissing-prototypes -Wredundant-de
 
 SOLIB=libmldsa44.so
 HEADERS=api.h ntt.h packing.h params.h poly.h polyvec.h reduce.h rounding.h sign.h symmetric.h
-OBJECTS=ntt.o packing.o poly.o polyvec.o reduce.o rounding.o sign.o symmetric-shake.o
+OBJECTS=ntt.o packing.o poly.o polyvec.o reduce.o rounding.o sign.o symmetric-shake.o fips202.o randombytes.o
+COMMON_DIR=../../../common
 
 all: $(SOLIB)
 
 %.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+fips202.o: $(COMMON_DIR)/fips202.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+randombytes.o: $(COMMON_DIR)/randombytes.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(SOLIB): $(OBJECTS)

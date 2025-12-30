@@ -152,6 +152,11 @@ torch.save(model, "models/small_model.pt")
 # 라이브러리 존재 확인
 ls -lh libmldsa44.so
 
+# 라이브러리 없는 경우 
+cd ./ML-DSA/crypto_sign/ml-dsa-44/1_clean
+make
+cp ./libmldsa44.so ../../../../about-pickle-internal/libmldsa44.so
+
 # 키 파일 확인
 ls -lh ml_dsa_*.key
 ```

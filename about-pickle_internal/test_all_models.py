@@ -285,7 +285,7 @@ def print_timing_tables():
     print("\\textbf{Model} & \\textbf{Hash} & \\textbf{Sign} & \\textbf{Write} & \\textbf{Total} \\\\")
     print("\\hline")
 
-    for model in ['small', 'medium', 'large']:
+    for model in ['small']:
         if model in TIMING_DATA['sign']:
             data = TIMING_DATA['sign'][model]
             print(f"{model.capitalize()}  & {data['hash']*1000:7.2f} & {data['sign']*1000:4.2f} & {data['write']*1000:8.2f} & {data['total']*1000:9.2f} \\\\")
@@ -306,7 +306,7 @@ def print_timing_tables():
     print("\\textbf{Model} & \\textbf{Load} & \\textbf{Hash} & \\textbf{Verify} & \\textbf{Total} \\\\")
     print("\\hline")
 
-    for model in ['small', 'medium', 'large']:
+    for model in ['small']:
         if model in TIMING_DATA['verify']:
             data = TIMING_DATA['verify'][model]
             print(f"{model.capitalize()}  & {data['load']*1000:7.2f} & {data['hash']*1000:7.2f} & {data['verify']*1000:4.2f} & {data['total']*1000:9.2f} \\\\")
@@ -520,8 +520,8 @@ def main():
     print("=" * 70)
     print("[SECURITY] COMPREHENSIVE MODEL SECURITY TEST SUITE")
     print("=" * 70)
-    print("\nTesting 3 model sizes: Small, Medium, Large")
-    print("Each model will go through:")
+    print("\nTesting Small model (sentence-transformers/all-MiniLM-L6-v2)")
+    print("The model will go through:")
     print("  1. Create normal & signed models")
     print("  2. Inject malicious code into both")
     print("  3. Test 4 scenarios:")
@@ -538,7 +538,7 @@ def main():
     all_results = {}
     file_sizes = {}
 
-    for model_size in ['small', 'medium', 'large']:
+    for model_size in ['small']:
         print("\n\n" + "=" * 70)
         print(f"[TARGET] TESTING {model_size.upper()} MODEL")
         print("=" * 70)
@@ -581,7 +581,7 @@ def main():
     blocked_count = 0
     attack_demo_count = 0
 
-    for model_size in ['small', 'medium', 'large']:
+    for model_size in ['small']:
         print(f"\n{model_size.upper()} Model:")
         if model_size in all_results:
             for test_name, result in all_results[model_size]:
@@ -622,7 +622,7 @@ def main():
     print("[INFO] FILE SIZE SUMMARY")
     print("=" * 70)
 
-    for model_size in ['small', 'medium', 'large']:
+    for model_size in ['small']:
         if model_size in file_sizes:
             sizes = file_sizes[model_size]
             normal = sizes['normal']

